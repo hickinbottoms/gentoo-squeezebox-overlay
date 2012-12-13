@@ -1,0 +1,17 @@
+# ChangeLog for media-sound/logitechmediaserver-bin
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*logitechmediaserver-bin-7.7.2-r2 (13 Dec 2012)
+
+  13 Dec 2012; Stuart Hickinbottom <stuarth@gentoo.org>
+  +logitechmediaserver-bin-7.7.2-r2.ebuild,
+  +files/logitechmediaserver-bin-7.7.2-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.7.2-uuid-gentoo.patch,
+  +files/Gentoo-detailed-changelog.txt, +files/Gentoo-plugins-README.txt,
+  +files/gentoo-filepaths.pm, +files/logitechmediaserver.conf.d,
+  +files/logitechmediaserver.init.d, +files/logitechmediaserver.logrotate.d,
+  +metadata.xml:
+  Initial version supporting migration of 7.7.2-r2 to overlay with retirement
+  of lavajoe
+
