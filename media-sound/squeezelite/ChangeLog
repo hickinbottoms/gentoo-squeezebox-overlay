@@ -1,0 +1,13 @@
+# ChangeLog for media-sound/squeezelite
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*squeezelite-0.7_alpha_p2 (21 Dec 2012)
+
+  21 Dec 2012; Stuart Hickinbottom <stuart@hickinbottom.com>
+  +squeezelite-0.7_alpha_p2.ebuild,
+  +files/squeezelite-0.7_alpha_p2-gentoo-makefile.patch,
+  +files/squeezelite-0.7_alpha_p2-gentoo-optional-codecs.patch,
+  +files/squeezelite.conf.d, +files/squeezelite.init.d, +metadata.xml:
+  Added ebuild for Squeezelite, a small headless Squeezebox emulator.
+
