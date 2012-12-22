@@ -31,6 +31,7 @@ pkg_setup() {
 }
 
 src_prepare () {
+	# Apply patches
 	epatch "${FILESDIR}/${P}-gentoo-makefile.patch"
 	epatch "${FILESDIR}/${P}-gentoo-optional-codecs.patch"
 }
@@ -56,6 +57,7 @@ src_compile() {
 		einfo "AAC support disabled; add 'aac' USE flag if you need it"
 	fi
 
+	# Build it
 	emake || die "emake failed"
 }
 
@@ -65,9 +67,12 @@ src_install() {
 
 	newconfd "${FILESDIR}/${PN}.conf.d" "${PN}"
 	newinitd "${FILESDIR}/${PN}.init.d" "${PN}"
+}
 
-	# need init.d script
-	# need default conf.d script
-	# need a post-install notice to edit /etc/conf.d/squeezelite to
-	# configure the audio device
+pkg_postinst() {
+	# Provide some post-installation tips.
+	elog "If you want start Squeezelite automatically on system boot:"
+	elog "  rc-update add squeezelite default"
+	elog "Edit /etc/cond.d/squeezelite to customise -- in particular"
+	elog "you may want to set the audio device to be used."
 }
