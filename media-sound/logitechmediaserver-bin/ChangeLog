@@ -1,6 +1,18 @@
 # ChangeLog for media-sound/logitechmediaserver-bin
-# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+  08 Jan 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
+  logitechmediaserver-bin-7.7.2-r2.ebuild:
+  Corrected LICENSE and RESTRICT
+
+  License was inaccurately listed as GPL-2 (most, but not all, the contents of
+  the package were GPL). Corrected this to the special EULA included with the
+  package (this is included as a new license logitechmediaserver-bin in the
+  overlay), and also added RESTICT of bindist and mirror to reflect the
+  license's restrictions on redistribution of the binary package.
+
+  See bug#450914.
 
 *logitechmediaserver-bin-7.7.2-r2 (13 Dec 2012)
 
