@@ -27,7 +27,9 @@
     <remote-id type="google-code">squeezelite</remote-id>
   </upstream>
   <use>
-    <flag name='mp3'>Supports streaming MP3 from the server, utilising <pkg>media-libs/libmad</pkg></flag>
+	  <flag name='mp3'>(pre-0.9) Supports streaming MP3 from the server, utilising <pkg>media-libs/libmad</pkg></flag>
+	  <flag name='mad'>(post-0.9) Supports streaming MP3 from the server, utilising <pkg>media-libs/libmad</pkg></flag>
+	  <flag name='mpg123'>(post-0.9) Supports streaming MP3 from the server, utilising <pkg>media-sound/mpg123</pkg></flag>
     <flag name='flac'>Supports streaming FLAC from the server, utilising <pkg>media-libs/flac</pkg></flag>
     <flag name='vorbis'>Supports streaming Ogg/Vorbis from the server, utilising <pkg>media-libs/libvorbis</pkg></flag>
     <flag name='aac'>Supports streaming AAC from the server, utilising <pkg>media-libs/faad2</pkg></flag>
