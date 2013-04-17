@@ -2,6 +2,16 @@
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*squeezelite-1.1 (17 Apr 2013)
+
+  17 Apr 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
+  -squeezelite-0.7_alpha_p2.ebuild,
+  -files/squeezelite-0.7_alpha_p2-gentoo-makefile.patch,
+  -files/squeezelite-0.7_alpha_p2-gentoo-optional-codecs.patch,
+  +squeezelite-1.1.ebuild, +files/squeezelite-1.1-gentoo-makefile.patch,
+  +files/squeezelite-1.1-gentoo-optional-codecs.patch:
+  Updated for upstream 1.1 release
+
 *squeezelite-0.9_beta_p7 (15 Jan 2013)
 
   15 Jan 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
