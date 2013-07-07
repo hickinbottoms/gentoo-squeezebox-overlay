@@ -2,6 +2,19 @@
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*logitechmediaserver-bin-7.7.3_alpha1 (07 Jul 2013)
+
+  07 Jul 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
+  +logitechmediaserver-bin-7.7.3_alpha1.ebuild,
+  +files/logitechmediaserver-bin-7.7.3-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.7.3-uuid-gentoo.patch:
+  Added experimental 7.7.3_alpha1 build for Perl 5.16
+
+  This is an ebuild for the experimental Perl 5.16 compatible build made
+  available under this bug:
+  http://bugs.slimdevices.com/show_bug.cgi?id=17985
+
+
   08 Jan 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
   logitechmediaserver-bin-7.7.2-r2.ebuild:
   Corrected LICENSE and RESTRICT
