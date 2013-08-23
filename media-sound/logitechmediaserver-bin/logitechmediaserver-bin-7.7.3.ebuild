@@ -6,8 +6,8 @@ EAPI="3"
 
 inherit eutils user
 
-BUILD_NUM="1372939239"
-SRC_DIR="LogitechMediaServer_Perl5.16"
+BUILD_NUM="1375965195"
+SRC_DIR="LogitechMediaServer_v${PV}"
 MY_PN="${PN/-bin}"
 MY_PV="${PV/_*}"
 MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
@@ -21,7 +21,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P_BUILD_NUM}.tgz"
+SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
 
 # Installation dependencies.
 DEPEND="
@@ -30,10 +30,18 @@ DEPEND="
 	"
 
 # Runtime dependencies.
+#
+# TODO: Currently doesn't support Perl 5.16 on amd64 because the
+# binaries for that are not packaged in the Logitech release tarball.
+# Perl dependency for amd64 could be relaxed when they include those
+# (they include the binaries for 5.16/x32 so I think it's just an
+# oversight for now.)
 RDEPEND="
 	!prefix? ( >=sys-apps/baselayout-2.0.0 )
 	!prefix? ( virtual/logger )
-	>=dev-lang/perl-5.16[ithreads]
+	>=dev-lang/perl-5.8.8[ithreads]
+	x86? ( <=dev-lang/perl-5.16[ithreads] )
+	amd64? ( <=dev-lang/perl-5.14[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 
@@ -541,9 +549,17 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Apply patches
+	# Apply patches to make LMS work on Gentoo.
 	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
 	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
+
+	# Add some enhancement patches of my own.
+	epatch "${FILESDIR}/${P}-fix-transition-sample-rates2.patch"
+	epatch "${FILESDIR}/${P}-remove-softlink-target-check.patch"
+	# This can come out when we have a 7.8 ebuild as this patch has
+	# already been accepted upstream. This is backported from my
+	# original 7.8 patch.
+	epatch "${FILESDIR}/${P}-add-alarm-shuffle-setting.patch"
 }
 
 src_install() {

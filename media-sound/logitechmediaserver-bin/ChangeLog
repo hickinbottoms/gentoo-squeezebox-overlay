@@ -2,6 +2,23 @@
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*logitechmediaserver-bin-7.7.3 (23 Aug 2013)
+
+  23 Aug 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
+  -logitechmediaserver-bin-7.7.3_alpha1.ebuild,
+  +logitechmediaserver-bin-7.7.3.ebuild,
+  +files/logitechmediaserver-bin-7.7.3-add-alarm-shuffle-setting.patch,
+  +files/logitechmediaserver-bin-7.7.3-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.7.3-fix-transition-sample-rates2.patch,
+  +files/logitechmediaserver-bin-7.7.3-remove-softlink-target-check.patch,
+  +files/logitechmediaserver-bin-7.7.3-uuid-gentoo.patch,
+  -files/logitechmediaserver-bin-7.7.3_alpha1-client-playlists-gentoo.patch,
+  -files/logitechmediaserver-bin-7.7.3_alpha1-uuid-gentoo.patch:
+  Bump for official Logitech 7.7.3 release
+
+  This release supports Perl 5.16, but only on x86. On amd64 Perl 5.14 is
+  the latest supported version.
+
   07 Jul 2013; Stuart Hickinbottom <stuart@hickinbottom.com>
   -files/logitechmediaserver-bin-7.7.3-client-playlists-gentoo.patch,
   -files/logitechmediaserver-bin-7.7.3-uuid-gentoo.patch,
