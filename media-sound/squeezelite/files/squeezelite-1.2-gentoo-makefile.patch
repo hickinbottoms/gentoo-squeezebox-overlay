@@ -1,15 +1,15 @@
 diff --git a/Makefile b/Makefile
-index adf7749..36427f1 100644
+index d304602..0d62ff2 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,6 +1,6 @@
  # Cross compile support - create a Makefile which defines these three variables and then includes this Makefile...
  CFLAGS  ?= -Wall -fPIC -O2 $(OPTS)
--LDFLAGS ?= -lasound -lpthread -ldl -lrt
-+EXTRALIBS ?= -lasound -lpthread -ldl -lrt
+-LDFLAGS ?= -lasound -lpthread -lm -ldl -lrt
++EXTRALIBS ?= -lasound -lpthread -lm -ldl -lrt
  EXECUTABLE ?= squeezelite
  
- SOURCES = main.c slimproto.c utils.c output.c buffer.c stream.c decode.c flac.c pcm.c mad.c vorbis.c faad.c mpg.c
+ SOURCES = main.c slimproto.c utils.c output.c buffer.c stream.c decode.c process.c resample.c flac.c pcm.c mad.c vorbis.c faad.c mpg.c
 @@ -11,7 +11,7 @@ OBJECTS = $(SOURCES:.c=.o)
  all: $(EXECUTABLE)
  
