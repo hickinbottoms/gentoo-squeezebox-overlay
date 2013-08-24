@@ -1,8 +1,8 @@
 diff --git a/decode.c b/decode.c
-index 9e09c26..4ebf1f3 100644
+index 05fcdce..d9d9fa2 100644
 --- a/decode.c
 +++ b/decode.c
-@@ -100,14 +100,24 @@ void decode_init(log_level level, const char *opt) {
+@@ -131,14 +131,24 @@ void decode_init(log_level level, const char *opt) {
  	// register codecs
  	// alc,wma,wmap,wmal,aac,spt,ogg,ogf,flc,aif,pcm,mp3
  	i = 0;
@@ -25,10 +25,10 @@ index 9e09c26..4ebf1f3 100644
  	if ((!opt || strstr(opt, "mp3") || strstr(opt, "mpg")) && !codecs[i]) codecs[i] = register_mpg();
 +#endif
  
- #if LINUX || OSX
- 	pthread_attr_t attr;
+ 	mutex_create(decode.mutex);
+ 
 diff --git a/faad.c b/faad.c
-index a2fa14f..f95f94d 100644
+index 6adb88a..33a7f10 100644
 --- a/faad.c
 +++ b/faad.c
 @@ -20,6 +20,8 @@
@@ -40,14 +40,14 @@ index a2fa14f..f95f94d 100644
  #include <neaacdec.h>
  
  #define WRAPBUF_LEN 2048
-@@ -575,3 +577,5 @@ struct codec *register_faad(void) {
+@@ -601,3 +603,5 @@ struct codec *register_faad(void) {
  
  	return &ret;
  }
 +
 +#endif
 diff --git a/flac.c b/flac.c
-index 69e3ba6..5e15171 100644
+index 5d22bfe..cab6601 100644
 --- a/flac.c
 +++ b/flac.c
 @@ -20,6 +20,8 @@
@@ -59,14 +59,14 @@ index 69e3ba6..5e15171 100644
  #include <FLAC/stream_decoder.h>
  
  struct flac {
-@@ -214,3 +216,5 @@ struct codec *register_flac(void) {
+@@ -253,3 +255,5 @@ struct codec *register_flac(void) {
  
  	return &ret;
  }
 +
 +#endif
 diff --git a/mad.c b/mad.c
-index 8bb89f2..631b1b5 100644
+index 0e73b35..5058656 100644
 --- a/mad.c
 +++ b/mad.c
 @@ -20,6 +20,8 @@
@@ -78,14 +78,14 @@ index 8bb89f2..631b1b5 100644
  #include <mad.h>
  
  #define MAD_DELAY 529
-@@ -310,3 +312,5 @@ struct codec *register_mad(void) {
+@@ -350,3 +352,5 @@ struct codec *register_mad(void) {
  
  	return &ret;
  }
 +
 +#endif
 diff --git a/mpg.c b/mpg.c
-index 92f2121..5ec084b 100644
+index 4142282..7326af8 100644
 --- a/mpg.c
 +++ b/mpg.c
 @@ -20,6 +20,8 @@
@@ -97,14 +97,14 @@ index 92f2121..5ec084b 100644
  #include <mpg123.h>
  
  #define READ_SIZE  512
-@@ -222,3 +224,5 @@ struct codec *register_mpg(void) {
+@@ -261,3 +263,5 @@ struct codec *register_mpg(void) {
  
  	return &ret;
  }
 +
 +#endif
 diff --git a/vorbis.c b/vorbis.c
-index 748dfae..217ca49 100644
+index 37c544c..56eb046 100644
 --- a/vorbis.c
 +++ b/vorbis.c
 @@ -20,6 +20,8 @@
@@ -116,7 +116,7 @@ index 748dfae..217ca49 100644
  // automatically select between floating point (preferred) and fixed point libraries:
  // NOTE: works with Tremor version here: http://svn.xiph.org/trunk/Tremor, not vorbisidec.1.0.2 currently in ubuntu
  
-@@ -245,3 +247,5 @@ struct codec *register_vorbis(void) {
+@@ -293,3 +295,5 @@ struct codec *register_vorbis(void) {
  
  	return &ret;
  }
