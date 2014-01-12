@@ -1,6 +1,25 @@
 # ChangeLog for media-sound/logitechmediaserver-bin
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+*logitechmediaserver-bin-7.8_pre20140105 (12 Jan 2014)
+
+  12 Jan 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
+  +logitechmediaserver-bin-7.8_pre20140105.ebuild,
+  +files/logitechmediaserver-bin-7.8_pre20140105-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.8_pre20140105-fix-transition-sample-rates2.p
+  atch,
+  +files/logitechmediaserver-bin-7.8_pre20140105-remove-softlink-target-check.p
+  atch, +files/logitechmediaserver-bin-7.8_pre20140105-uuid-gentoo.patch,
+  +files/logitechmediaserver.service, files/logitechmediaserver.conf.d:
+  Added 7.8_pre20140105 ebuild
+
+  This is a pre-release of 7.8 (which has proven very stable for
+  me), built from a snapshot directly from Logitech's github
+  repository. Significant changes are that Perl up to 5.16 is
+  supported on x86, and up to 5.18 on amd64 (although I've only
+  personally tested it with 5.16). Additionally, a systemd unit is
+  installed for folks who use it.
 
 *logitechmediaserver-bin-7.7.3 (23 Aug 2013)
 
