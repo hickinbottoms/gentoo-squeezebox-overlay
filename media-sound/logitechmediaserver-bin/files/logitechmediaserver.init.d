@@ -1,5 +1,5 @@
 #!/sbin/runscript
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
 
@@ -39,8 +39,6 @@ start() {
 		--cachedir=${cachedir} \
 		--prefsdir=${prefsdir} \
 		--logdir=${logdir} \
-		--audiodir=${LMS_MUSIC_DIR} \
-		--playlistdir=${LMS_PLAYLISTS_DIR} \
 		${LMS_OPTS}
 
 	eend $? "Failed to start Logitech Media Server"

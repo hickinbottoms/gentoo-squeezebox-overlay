@@ -2,6 +2,18 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jan 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
+  files/logitechmediaserver.conf.d, files/logitechmediaserver.init.d,
+  files/logitechmediaserver.service:
+  Removed configuration settings for 7.8
+
+  Removed the settings for media directory and playlist from
+  /etc/conf.d/logitechmediaserver because these were not working and
+  has led to some confusion.
+
+  See /opt/logitechmediaserver/Changelog*.html following installation for
+  detailed changelog.
+
 *logitechmediaserver-bin-7.8_pre20140105 (12 Jan 2014)
 
   12 Jan 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
