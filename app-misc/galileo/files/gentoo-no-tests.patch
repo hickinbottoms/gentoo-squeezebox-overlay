@@ -1,0 +1,11 @@
+--- setup.py.old        2014-03-23 18:53:00.000000000 +0000
++++ setup.py    2014-03-26 22:08:11.070136893 +0000
+@@ -43,7 +43,7 @@
+         'Operating System :: OS Independent',
+         'Programming Language :: Python',
+     ],
+-    packages=find_packages(),
++    packages=find_packages(exclude=('tests',)),
+     entry_points={
+         'console_scripts': [
+             'galileo = galileo.main:main'
