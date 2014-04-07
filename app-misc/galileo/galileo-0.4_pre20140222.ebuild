@@ -12,7 +12,7 @@ SRC_URI="https://bitbucket.org/benallard/galileo/get/b0bed0aea282.tar.gz -> ${P}
 
 KEYWORDS="~amd64 ~x86"
 DESCRIPTION="Synchronisation utility for Bluetooth LE-based Fitbit trackers"
-LICENSE="LGPL"
+LICENSE="LGPL-3+"
 SLOT="0"
 IUSE=""
 
