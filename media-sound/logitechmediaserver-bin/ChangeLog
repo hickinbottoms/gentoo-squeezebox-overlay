@@ -2,6 +2,17 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*logitechmediaserver-bin-7.8.0 (08 Apr 2014)
+
+  08 Apr 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
+  +logitechmediaserver-bin-7.8.0.ebuild,
+  +files/logitechmediaserver-bin-7.8.0-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.8.0-fix-transition-sample-rates2.patch,
+  +files/logitechmediaserver-bin-7.8.0-remove-softlink-target-check.patch,
+  +files/logitechmediaserver-bin-7.8.0-uuid-gentoo.patch,
+  files/logitechmediaserver.init.d:
+  Added ebuild for official 7.8.0 release
+
   13 Jan 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
   files/logitechmediaserver.conf.d, files/logitechmediaserver.init.d,
   files/logitechmediaserver.service:
