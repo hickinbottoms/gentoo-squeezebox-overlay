@@ -7,8 +7,11 @@ PYTHON_COMPAT=(python{2_6,2_7})
 
 inherit distutils-r1 vcs-snapshot user systemd udev
 
+
 HOMEPAGE="https://bitbucket.org/benallard/galileo"
-SRC_URI="https://bitbucket.org/benallard/galileo/get/b0bed0aea282.tar.gz -> ${P}.tar.gz"
+
+COMMIT_ID="082c494e68ff"
+SRC_URI="https://bitbucket.org/benallard/galileo/get/${PV}.tar.bz2 -> ${P}.tar.bz2"
 
 KEYWORDS="~amd64 ~x86"
 DESCRIPTION="Synchronisation utility for Bluetooth LE-based Fitbit trackers"
@@ -36,6 +39,15 @@ pkg_setup() {
 	enewuser ${RUN_UID} -1 -1 "/dev/null" ${RUN_GID}
 }
 
+src_prepare() {
+	einfo "Applying patches"
+	epatch "${FILESDIR}/gentoo-no-tests.patch"
+
+	# Main python package installation
+	einfo "Performing standard Python ebuild install"
+	distutils-r1_python_prepare
+}
+
 python_install_all() {
 
 	# Initialisation (OpenRC)
@@ -51,7 +63,10 @@ python_install_all() {
 	# Configuration
 	einfo "Installing default configuration"
 	insinto /etc
-	newins "${FILESDIR}/galileorc" galileorc
+	newins "${FILESDIR}/galileorc-2" galileorc
+
+	# Manual pages
+	doman doc/galileo.1 doc/galileorc.5
 
 	# Initialise log directory
 	einfo "Initialising logfile directory"
