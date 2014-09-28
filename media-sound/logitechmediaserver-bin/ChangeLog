@@ -2,6 +2,38 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*logitechmediaserver-bin-7.9.0_pre20140928 (28 Sep 2014)
+*logitechmediaserver-bin-7.8.1_pre20140927 (28 Sep 2014)
+
+  28 Sep 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
+  -logitechmediaserver-bin-7.7.2-r2.ebuild,
+  -logitechmediaserver-bin-7.8_pre20140105.ebuild,
+  +logitechmediaserver-bin-7.8.1_pre20140927.ebuild,
+  +logitechmediaserver-bin-7.9.0_pre20140928.ebuild,
+  -files/logitechmediaserver-bin-7.7.2-client-playlists-gentoo.patch,
+  -files/logitechmediaserver-bin-7.7.2-uuid-gentoo.patch,
+  -files/logitechmediaserver-bin-7.8_pre20140105-client-playlists-gentoo.patch,
+  +files/logitechmediaserver-bin-7.8.1_pre20140927-client-playlists-gentoo.patc
+  h,
+  -files/logitechmediaserver-bin-7.8_pre20140105-fix-transition-sample-rates2.p
+  atch,
+  +files/logitechmediaserver-bin-7.8.1_pre20140927-fix-transition-sample-rates2
+  .patch,
+  -files/logitechmediaserver-bin-7.8_pre20140105-remove-softlink-target-check.p
+  atch, +files/logitechmediaserver-bin-7.8.1_pre20140927-uuid-gentoo.patch,
+  -files/logitechmediaserver-bin-7.8_pre20140105-uuid-gentoo.patch,
+  +files/logitechmediaserver-bin-7.9.0_pre20140928-client-playlists-gentoo.patc
+  h, +files/logitechmediaserver-bin-7.9.0_pre20140928-uuid-gentoo.patch,
+  files/Gentoo-detailed-changelog.txt:
+  Added 7.8.1_pre20140927 and 7.9.0_pre20140928
+
+  - 7.8.1 nightly:
+    - x86 -- perl <= 5.16
+    - amd64 -- perl <= 5.20
+  - 7.9.0 nightly:
+    - x86 -- perl <= 5.18
+    - amd64 -- perl <= 5.20
+
   22 Apr 2014; Stuart Hickinbottom <stuart@hickinbottom.com>
   files/logitechmediaserver.init.d:
   Fixed broken manifest

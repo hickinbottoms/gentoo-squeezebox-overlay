@@ -1,8 +1,6 @@
-diff --git a/Slim/Player/ReplayGain.pm b/Slim/Player/ReplayGain.pm
-index 10afe1f..d142364 100644
---- a/Slim/Player/ReplayGain.pm
-+++ b/Slim/Player/ReplayGain.pm
-@@ -74,10 +74,7 @@ sub fetchGainMode {
+--- Slim/Player/ReplayGain.pm.orig	2014-09-27 15:15:59.976908870 +0100
++++ Slim/Player/ReplayGain.pm	2014-09-27 15:14:48.202343905 +0100
+@@ -74,10 +74,7 @@
  	return preventClipping( $track->replay_gain(), $track->replay_peak() );
  }
  
@@ -14,7 +12,7 @@ index 10afe1f..d142364 100644
  	my $class  = shift;
  	my $client = shift;
  	my $offset = shift;
-@@ -114,10 +111,24 @@ sub trackAlbumMatch {
+@@ -114,10 +111,24 @@
  	# Get the track objects
  	my $current_url   = Slim::Player::Playlist::song($client, $current_index);
  	my $current_track = Slim::Schema->objectForUrl({ 'url' => $current_url, 'create' => 1, 'readTags' => 1 });
@@ -40,7 +38,7 @@ index 10afe1f..d142364 100644
  	if (!blessed($current_track) || !blessed($compare_track)) {
  
  		logError("Couldn't find object for track: [$current_track] or [$compare_track] !");
-@@ -178,18 +189,88 @@ sub trackAlbumMatch {
+@@ -178,18 +189,88 @@
  	return 0;
  }
  
@@ -131,11 +129,9 @@ index 10afe1f..d142364 100644
  	return $gain;
  }
  
-diff --git a/Slim/Player/Squeezebox.pm b/Slim/Player/Squeezebox.pm
-index dbcf313..e93fdcf 100644
---- a/Slim/Player/Squeezebox.pm
-+++ b/Slim/Player/Squeezebox.pm
-@@ -994,19 +994,30 @@ sub stream_s {
+--- Slim/Player/Squeezebox.pm.orig	2014-09-27 15:15:55.008731322 +0100
++++ Slim/Player/Squeezebox.pm	2014-09-27 15:15:24.451639324 +0100
+@@ -994,19 +994,30 @@
  			}
  		}
  

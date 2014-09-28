@@ -7,7 +7,7 @@ EAPI="3"
 MY_PN="${PN/-bin}"
 
 if [[ ${PV} == *_pre* ]] ; then
-	GIT_COMMIT="cd49c0fd9518fdc978d8e32c668c76f506ad5bbd"
+	GIT_COMMIT="c05d9360b3d2141eaa2083237243777f8dd1cb42"
 	SRC_URI="https://github.com/Logitech/slimserver/archive/${GIT_COMMIT}.zip"
 	HOMEPAGE="http://github.com/Logitech/slimserver"
 	S="${WORKDIR}/slimserver-${GIT_COMMIT}"
@@ -46,8 +46,8 @@ RDEPEND="
 	!prefix? ( >=sys-apps/baselayout-2.0.0 )
 	!prefix? ( virtual/logger )
 	>=dev-lang/perl-5.8.8[ithreads]
-	x86? ( <dev-lang/perl-5.17[ithreads] )
-	amd64? ( <dev-lang/perl-5.19[ithreads] )
+	x86? ( <dev-lang/perl-5.19[ithreads] )
+	amd64? ( <dev-lang/perl-5.21[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 
@@ -88,6 +88,10 @@ QA_PREBUILT="
 	opt/logitechmediaserver/Bin/sparc-linux/alac
 	opt/logitechmediaserver/Bin/sparc-linux/faad
 	opt/logitechmediaserver/Bin/sparc-linux/mp42aac
+	opt/logitechmediaserver/Bin/x86_64-linux/faad
+	opt/logitechmediaserver/Bin/x86_64-linux/flac
+	opt/logitechmediaserver/Bin/x86_64-linux/sox
+	opt/logitechmediaserver/Bin/x86_64-linux/wvunpack
 	opt/logitechmediaserver/CPAN/arch/5.10/arm-linux-gnueabi-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.10/arm-linux-gnueabi-thread-multi/auto/Class/XSAccessor/XSAccessor.so
 	opt/logitechmediaserver/CPAN/arch/5.10/arm-linux-gnueabi-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
@@ -178,7 +182,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.10/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -200,7 +203,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.12/arm-linux-gnueabi-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -222,7 +224,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -244,7 +245,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.12/i386-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -266,7 +266,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.12/powerpc-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -288,7 +287,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.12/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -310,7 +308,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabi-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -330,7 +327,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -352,7 +348,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -374,7 +369,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/i386-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
@@ -396,7 +390,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/powerpc-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -418,7 +411,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.14/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -440,7 +432,6 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.16/i386-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -458,9 +449,46 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.16/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
-	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Compress/Raw/Zlib/Zlib.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/DBI/DBI.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
@@ -478,6 +506,25 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Class/C3/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Class/XSAccessor/XSAccessor.so
@@ -621,7 +668,6 @@ RUN_GID=logitechmediaserver
 
 # Installation locations
 OPTDIR="/opt/${MY_PN}"
-RUNDIR="/var/run/${MY_PN}"
 VARDIR="/var/lib/${MY_PN}"
 CACHEDIR="${VARDIR}/cache"
 USRPLUGINSDIR="${VARDIR}/Plugins"
@@ -648,10 +694,6 @@ src_prepare() {
 	# Apply patches to make LMS work on Gentoo.
 	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
 	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
-
-	# Add some enhancement patches of my own.
-	epatch "${FILESDIR}/${P}-fix-transition-sample-rates2.patch"
-	epatch "${FILESDIR}/${P}-remove-softlink-target-check.patch"
 }
 
 src_install() {
@@ -681,11 +723,6 @@ src_install() {
 
 	# Install unit file (systemd)
 	systemd_dounit "${FILESDIR}/${MY_PN}.service"
-
-	# Initialize run directory (where the PID file lives)
-	dodir "${RUNDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${RUNDIR}"
-	fperms 770 "${RUNDIR}"
 
 	# Initialize server cache directory
 	dodir "${CACHEDIR}"
