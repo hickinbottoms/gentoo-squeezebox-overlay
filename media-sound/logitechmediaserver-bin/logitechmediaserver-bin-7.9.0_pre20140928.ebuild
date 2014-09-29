@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
 
-EAPI="3"
+EAPI="5"
 
 MY_PN="${PN/-bin}"
 
@@ -12,6 +12,13 @@ if [[ ${PV} == *_pre* ]] ; then
 	HOMEPAGE="http://github.com/Logitech/slimserver"
 	S="${WORKDIR}/slimserver-${GIT_COMMIT}"
 	INHERIT_VCS=""
+	KEYWORDS="~amd64 ~x86"
+elif [[ ${PV} == "9999" ]] ; then
+	EGIT_BRANCH="public/7.9"
+	EGIT_REPO_URI="https://github.com/Logitech/slimserver.git"
+	HOMEPAGE="http://github.com/Logitech/slimserver"
+	S="${WORKDIR}/slimserver"
+	INHERIT_VCS="git-2"
 else
 	SRC_DIR="LogitechMediaServer_v${PV}"
 	SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
@@ -22,11 +29,10 @@ else
 	MY_P="${MY_PN}-${MY_PV}"
 	S="${WORKDIR}/${MY_P_BUILD_NUM}"
 	INHERIT_VCS=""
+	KEYWORDS="~amd64 ~x86"
 fi
 
 inherit ${INHERIT_VCS} eutils user systemd
-
-KEYWORDS="~amd64 ~x86"
 
 DESCRIPTION="Logitech Media Server (streaming audio server)"
 LICENSE="${PN}"
