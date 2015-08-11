@@ -1,2 +1,3 @@
 *~
-Makefile
+dev/*
+.rsync-filter
