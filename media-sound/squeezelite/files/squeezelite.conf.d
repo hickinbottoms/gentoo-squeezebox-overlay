@@ -6,6 +6,8 @@
 
 # IP address of Logitech Media Server; leave this blank to try to
 # locate the server via auto-discovery.
+# If you fill this in then include "-s" before the IP address, eg:
+#  SL_SERVER_IP="-s 1.2.3.4"
 SL_SERVERIP=""
 
 # User that Squeezelite should run as. The dedicated 'squeezelite'
