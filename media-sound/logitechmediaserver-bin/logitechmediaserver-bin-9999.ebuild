@@ -7,7 +7,7 @@ EAPI="5"
 MY_PN="${PN/-bin}"
 
 if [[ ${PV} == *_pre* ]] ; then
-	GIT_COMMIT="c05d9360b3d2141eaa2083237243777f8dd1cb42"
+	GIT_COMMIT="c17601c5892eaac40a359d1392e454ad5c69db9d"
 	SRC_URI="https://github.com/Logitech/slimserver/archive/${GIT_COMMIT}.zip"
 	HOMEPAGE="http://github.com/Logitech/slimserver"
 	S="${WORKDIR}/slimserver-${GIT_COMMIT}"
