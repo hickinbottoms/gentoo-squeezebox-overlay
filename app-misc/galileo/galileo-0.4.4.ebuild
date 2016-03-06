@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
 
@@ -40,8 +40,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	einfo "Applying patches"
-	epatch "${FILESDIR}/gentoo-no-tests.patch"
+	#einfo "Applying patches"
+	#epatch "${FILESDIR}/gentoo-no-tests.patch"
 
 	# Main python package installation
 	einfo "Performing standard Python ebuild install"
