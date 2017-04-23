@@ -20,14 +20,14 @@ elif [[ ${PV} == "9999" ]] ; then
 	S="${WORKDIR}/slimserver"
 	INHERIT_VCS="git-2"
 else
+	MY_PV="${PV/_*}"
+	MY_P="${MY_PN}-${MY_PV}"
+	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
 	SRC_DIR="LogitechMediaServer_v${PV}"
 	SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
 	HOMEPAGE="http://www.mysqueezebox.com/download"
 	BUILD_NUM="1375965195"
-	MY_PV="${PV/_*}"
-	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
-	MY_P="${MY_PN}-${MY_PV}"
-	S="${WORKDIR}/${MY_P_BUILD_NUM}"
+	S="${WORKDIR}/${MY_P}"
 	INHERIT_VCS=""
 	KEYWORDS="~amd64 ~x86"
 fi
@@ -53,7 +53,7 @@ RDEPEND="
 	!prefix? ( virtual/logger )
 	>=dev-lang/perl-5.8.8[ithreads]
 	x86? ( <dev-lang/perl-5.23[ithreads] )
-	amd64? ( <dev-lang/perl-5.23[ithreads] )
+	amd64? ( <dev-lang/perl-5.25[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 

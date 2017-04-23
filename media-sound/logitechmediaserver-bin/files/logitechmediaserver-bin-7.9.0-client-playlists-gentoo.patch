@@ -1,5 +1,5 @@
---- Slim/Player/Playlist.pm.orig	2012-05-29 13:43:52.000000000 +0100
-+++ Slim/Player/Playlist.pm	2012-05-29 13:43:52.000000000 +0100
+--- Slim/Player/Playlist.pm.orig	2015-08-16 16:39:04.469868701 +0100
++++ Slim/Player/Playlist.pm	2015-08-16 16:39:04.469868701 +0100
 @@ -1042,7 +1042,7 @@
  	$id =~ s/://g;
  
