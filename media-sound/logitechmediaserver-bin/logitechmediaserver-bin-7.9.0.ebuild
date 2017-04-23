@@ -7,7 +7,7 @@ EAPI="5"
 MY_PN="${PN/-bin}"
 
 if [[ ${PV} == *_pre* ]] ; then
-	GIT_COMMIT="c05d9360b3d2141eaa2083237243777f8dd1cb42"
+	GIT_COMMIT="c17601c5892eaac40a359d1392e454ad5c69db9d"
 	SRC_URI="https://github.com/Logitech/slimserver/archive/${GIT_COMMIT}.zip"
 	HOMEPAGE="http://github.com/Logitech/slimserver"
 	S="${WORKDIR}/slimserver-${GIT_COMMIT}"
@@ -20,14 +20,14 @@ elif [[ ${PV} == "9999" ]] ; then
 	S="${WORKDIR}/slimserver"
 	INHERIT_VCS="git-2"
 else
+	MY_PV="${PV/_*}"
+	MY_P="${MY_PN}-${MY_PV}"
+	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
 	SRC_DIR="LogitechMediaServer_v${PV}"
 	SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
 	HOMEPAGE="http://www.mysqueezebox.com/download"
 	BUILD_NUM="1375965195"
-	MY_PV="${PV/_*}"
-	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
-	MY_P="${MY_PN}-${MY_PV}"
-	S="${WORKDIR}/${MY_P_BUILD_NUM}"
+	S="${WORKDIR}/${MY_P}"
 	INHERIT_VCS=""
 	KEYWORDS="~amd64 ~x86"
 fi
@@ -52,8 +52,8 @@ RDEPEND="
 	!prefix? ( >=sys-apps/baselayout-2.0.0 )
 	!prefix? ( virtual/logger )
 	>=dev-lang/perl-5.8.8[ithreads]
-	x86? ( <dev-lang/perl-5.19[ithreads] )
-	amd64? ( <dev-lang/perl-5.21[ithreads] )
+	x86? ( <dev-lang/perl-5.23[ithreads] )
+	amd64? ( <dev-lang/perl-5.25[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 
@@ -67,6 +67,10 @@ QA_PREBUILT="
 	opt/logitechmediaserver/Bin/arm-linux/sls
 	opt/logitechmediaserver/Bin/arm-linux/sox
 	opt/logitechmediaserver/Bin/arm-linux/wvunpack
+	opt/logitechmediaserver/Bin/armhf-linux/faad
+	opt/logitechmediaserver/Bin/armhf-linux/flac
+	opt/logitechmediaserver/Bin/armhf-linux/sox
+	opt/logitechmediaserver/Bin/armhf-linux/wvunpack
 	opt/logitechmediaserver/Bin/darwin/faad
 	opt/logitechmediaserver/Bin/darwin/flac
 	opt/logitechmediaserver/Bin/darwin/mac
@@ -512,6 +516,44 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
