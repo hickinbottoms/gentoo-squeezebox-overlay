@@ -1,8 +1,7 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header$
 
-EAPI="5"
+EAPI="6"
 
 MY_PN="${PN/-bin}"
 
@@ -17,8 +16,8 @@ elif [[ ${PV} == "9999" ]] ; then
 	EGIT_BRANCH="public/7.9"
 	EGIT_REPO_URI="https://github.com/Logitech/slimserver.git"
 	HOMEPAGE="http://github.com/Logitech/slimserver"
-	S="${WORKDIR}/slimserver"
-	INHERIT_VCS="git-2"
+	S="${WORKDIR}/${PN}-${PV}"
+	INHERIT_VCS="git-r3"
 else
 	MY_PV="${PV/_*}"
 	MY_P="${MY_PN}-${MY_PV}"
@@ -35,6 +34,7 @@ fi
 inherit ${INHERIT_VCS} eutils user systemd
 
 DESCRIPTION="Logitech Media Server (streaming audio server)"
+HOMEPAGE="http://github.com/Logitech/slimserver"
 LICENSE="${PN}"
 RESTRICT="bindist mirror"
 SLOT="0"
@@ -95,6 +95,8 @@ src_prepare() {
 	# Apply patches to make LMS work on Gentoo.
 	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
 	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
+	(cd Bin && rm -rf arm*-linux i86pc-solaris* sparc-linux powerpc-linux)
+	eapply_user
 }
 
 src_install() {
