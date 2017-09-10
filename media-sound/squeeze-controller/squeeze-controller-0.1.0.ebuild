@@ -52,4 +52,6 @@ src_install() {
 		snapshot_blob.bin
 
 	make_wrapper "${PN}" ./${PN} /opt/${PN} .
+
+	readme.gentoo_create_doc
 }
