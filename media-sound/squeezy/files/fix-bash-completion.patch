@@ -1,0 +1,13 @@
+diff --git a/_squeezy.bash b/_squeezy.bash
+index fe4ed64..8976077 100755
+--- a/_squeezy.bash
++++ b/_squeezy.bash
+@@ -26,8 +26,6 @@ _squeezy()
+ 
+ }
+ 
+-complete -F _pkg_delete $dirnames pi piu pm portmaster
+-
+ for player in squeezy $(squeezy -players)
+ do
+    player_lc=$(echo $player | tr 'A-Z' 'a-z')
