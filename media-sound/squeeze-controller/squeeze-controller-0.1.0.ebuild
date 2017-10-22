@@ -26,6 +26,7 @@ QA_PREBUILT="opt/${PN}/${PN} opt/${PN}/libffmpeg.so opt/${PN}/libnode.so"
 
 S="${WORKDIR}/Squeeze Controller-linux-x64"
 
+DISABLE_AUTOFORMATTING=1
 DOC_CONTENTS="
 Support thread at:
    http://forums.slimdevices.com/showthread.php?105966-Announce-Squeeze-Controller-windows-linux-osx-Alpha-Testers-Wanted
@@ -54,4 +55,8 @@ src_install() {
 	make_wrapper "${PN}" ./${PN} /opt/${PN} .
 
 	readme.gentoo_create_doc
+}
+
+pkg_postinst() {
+	readme.gentoo_print_elog
 }
