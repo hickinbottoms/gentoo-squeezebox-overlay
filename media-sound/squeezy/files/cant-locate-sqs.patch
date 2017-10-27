@@ -1,0 +1,12 @@
+diff --git a/squeezy b/squeezy
+index e1f1e27..a5cfcd9 100755
+--- a/squeezy
++++ b/squeezy
+@@ -259,7 +259,6 @@ sub aws_recv {
+ }
+ 
+ sub send_command_aws {
+-   use Amazon::SQS::Simple;
+    use Time::HiRes;
+ 
+    # Create an SQS object
