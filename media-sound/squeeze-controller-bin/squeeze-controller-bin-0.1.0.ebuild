@@ -6,10 +6,11 @@ EAPI="6"
 inherit readme.gentoo-r1 eutils versionator
 
 MY_VER="alpha.13"
+MY_PN="${PN%-bin}"
 
 DESCRIPTION="A stylish controller app for the Logitech Media Server"
 HOMEPAGE="https://github.com/michiil/squeeze-controller"
-SRC_URI="https://github.com/michiil/${PN}/releases/download/${PV}-${MY_VER}/${PN}-linux-x64.tar.gz -> ${P}-${MY_VER}-linux-x64.tar.gz"
+SRC_URI="https://github.com/michiil/${MY_PN}/releases/download/${PV}-${MY_VER}/${MY_PN}-linux-x64.tar.gz -> ${P}-${MY_VER}-linux-x64.tar.gz"
 #        https://github.com/michiil/squeeze-controller/releases/download/0.1.0-alpha.13/squeeze-controller-linux-x64.tar.gz
 RESTRICT="mirror"
 
@@ -22,7 +23,7 @@ DEPEND=""
 RDEPEND="${DEPEND}
 "
 
-QA_PREBUILT="opt/${PN}/${PN} opt/${PN}/libffmpeg.so opt/${PN}/libnode.so"
+QA_PREBUILT="opt/${MY_PN}/${MY_PN} opt/${MY_PN}/libffmpeg.so opt/${MY_PN}/libnode.so"
 
 S="${WORKDIR}/Squeeze Controller-linux-x64"
 
@@ -33,10 +34,10 @@ Support thread at:
 "
 
 src_install() {
-	exeinto /opt/${PN}
-	newexe "Squeeze Controller" ${PN}
+	exeinto /opt/${MY_PN}
+	newexe "Squeeze Controller" ${MY_PN}
 
-	insinto /opt/${PN}
+	insinto /opt/${MY_PN}
 	doins libffmpeg.so libnode.so
 	doins -r locales resources
 
@@ -52,7 +53,7 @@ src_install() {
 		natives_blob.bin \
 		snapshot_blob.bin
 
-	make_wrapper "${PN}" ./${PN} /opt/${PN} .
+	make_wrapper "${MY_PN}" ./${MY_PN} /opt/${MY_PN} .
 
 	readme.gentoo_create_doc
 }
