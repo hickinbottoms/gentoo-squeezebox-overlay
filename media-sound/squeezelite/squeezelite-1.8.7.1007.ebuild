@@ -1,24 +1,20 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
-EAPI=5
+EAPI=6
 
 inherit eutils user flag-o-matic git-r3
 
-DESCRIPTION="Squeezelite is a small headless Squeezebox emulator for Linux using ALSA audio output"
-HOMEPAGE="https://code.google.com/p/squeezelite"
+DESCRIPTION="Lightweight headless squeezebox client emulator"
+HOMEPAGE="https://github.com/ralph-irving/squeezelite"
 
-EGIT_REPO_URI="https://code.google.com/p/squeezelite"
-GIT_ECLASS="git-r3"
-EGIT_COMMIT="8b8dfe6918ebe45ade5f3d9b68d453d7b8128d99"
+EGIT_REPO_URI="https://github.com/ralph-irving/squeezelite.git"
+EGIT_COMMIT="68770e4ed38d3a547912c39de69edaf41dcace84"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="aac dsd ffmpeg flac mad mpg123 resample visexport vorbis"
-
-# ToDo: visexport use flag needs jivelite - add ebuild for https://code.google.com/p/jivelite/
+IUSE="aac dsd ffmpeg flac mad mpg123 pulseaudio resample visexport vorbis"
 
 # ffmpeg provides alac and wma codecs
 DEPEND="media-libs/alsa-lib
@@ -29,19 +25,26 @@ DEPEND="media-libs/alsa-lib
 		mpg123? ( media-sound/mpg123 )
 		aac? ( media-libs/faad2 )
 		resample? ( media-libs/soxr )
+		visexport? ( media-sound/jivelite )
+		pulseaudio? ( media-plugins/alsa-plugins[pulseaudio] )
 "
 RDEPEND="${DEPEND}
 		 media-sound/alsa-utils"
 
 pkg_setup() {
-	# Create the user and group if not already present
-	enewuser squeezelite -1 -1 "/dev/null" audio
+	enewgroup squeezelite
+	if use pulseaudio ; then
+		enewuser squeezelite -1 -1 "/dev/null" "squeezelite"
+	else
+		enewuser squeezelite -1 -1 "/dev/null" "squeezelite,audio"
+	fi
 }
 
 src_prepare () {
-	# Apply patches
 	epatch "${FILESDIR}/${P}-gentoo-makefile.patch"
 	epatch "${FILESDIR}/${P}-gentoo-optional-codecs.patch"
+	epatch "${FILESDIR}/${P}-gentoo-optional-codecs-decode.patch"
+	eapply_user
 }
 
 src_compile() {
@@ -104,7 +107,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	# Provide some post-installation tips.
 	elog "If you want start Squeezelite automatically on system boot:"
 	elog "  rc-update add squeezelite default"
 	elog "Edit /etc/cond.d/squeezelite to customise -- in particular"

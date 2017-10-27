@@ -1,6 +1,5 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 # Configuration for /etc/init.d/squeezelite
 
@@ -21,4 +20,12 @@ SL_USER=squeezelite
 
 # Any other switches to pass to Squeezelite. See 'squeezelite -h' for
 # a description of all possible switches.
+
+# Example setting:
+#  1. the ALSA output device
+#  2. the player name
+#  3. turning on visualiser support (-v)
+#
+# SL_OPTS="-o sysdefault -n $HOSTNAME -v"
+#
 SL_OPTS=""
