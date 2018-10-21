@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="7"
 
 MY_PN="${PN/-bin}"
 
@@ -21,11 +21,9 @@ elif [[ ${PV} == "9999" ]] ; then
 else
 	MY_PV="${PV/_*}"
 	MY_P="${MY_PN}-${MY_PV}"
-	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
 	SRC_DIR="LogitechMediaServer_v${PV}"
 	SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
 	HOMEPAGE="http://www.mysqueezebox.com/download"
-	BUILD_NUM="1375965195"
 	S="${WORKDIR}/${MY_P}"
 	INHERIT_VCS=""
 	KEYWORDS="~amd64 ~x86"
@@ -39,6 +37,11 @@ LICENSE="${PN}"
 RESTRICT="bindist mirror"
 SLOT="0"
 IUSE=""
+
+PATCHES=(
+	"${FILESDIR}/${P}-uuid-gentoo.patch"
+	"${FILESDIR}/${P}-client-playlists-gentoo.patch"
+)
 
 # Installation dependencies.
 DEPEND="
@@ -92,11 +95,14 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Apply patches to make LMS work on Gentoo.
-	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
-	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
-	(cd Bin && rm -rf arm*-linux i86pc-solaris* sparc-linux powerpc-linux)
-	eapply_user
+	(cd Bin && rm -rf aarch64-linux arm*-linux i86pc-solaris* sparc-linux powerpc-linux)
+	rm -rf CPAN/arch/*/aarch64* CPAN/arch/*/arm*
+	if use amd64 ; then
+		rm -rf Bin/i386-linux CPAN/arch/*/i386-linux-thread-multi-64int
+	elif use x86 ; then
+		rm -rf Bin/x86_64-linux CPAN/arch/*/x86_64-linux-thread-multi
+	fi
+	default
 }
 
 src_install() {
@@ -115,17 +121,16 @@ src_install() {
 	dodoc "${FILESDIR}/Gentoo-plugins-README.txt"
 	dodoc "${FILESDIR}/Gentoo-detailed-changelog.txt"
 
-	# Preferences directory
-	dodir "${PREFSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${PREFSDIR}"
-	fperms 770 "${PREFSDIR}"
-
 	# Install init scripts (OpenRC)
 	newconfd "${FILESDIR}/logitechmediaserver.conf.d" "${MY_PN}"
 	newinitd "${FILESDIR}/logitechmediaserver.init.d" "${MY_PN}"
 
 	# Install unit file (systemd)
 	systemd_dounit "${FILESDIR}/${MY_PN}.service"
+
+	# Initialise user data directories
+	diropts -m 0770 -o ${RUN_UID} -g ${RUN_GID}
+	keepdir "${PREFSDIR}" "${CLIENTPLAYLISTSDIR}" "${USRPLUGINSDIR}" "${CACHEDIR}"
 
 	# Initialize server cache directory
 	dodir "${CACHEDIR}"
@@ -134,24 +139,12 @@ src_install() {
 
 	# Initialize the log directory
 	dodir "${LOGDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}"
-	fperms 770 "${LOGDIR}"
 	touch "${ED}/${LOGDIR}/server.log"
 	touch "${ED}/${LOGDIR}/scanner.log"
 	touch "${ED}/${LOGDIR}/perfmon.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/server.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/scanner.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/perfmon.log"
-
-	# Initialise the user-installed plugins directory
-	dodir "${USRPLUGINSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${USRPLUGINSDIR}"
-	fperms 770 "${USRPLUGINSDIR}"
-
-	# Initialise the client playlists directory
-	dodir "${CLIENTPLAYLISTSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${CLIENTPLAYLISTSDIR}"
-	fperms 770 "${CLIENTPLAYLISTSDIR}"
 
 	# Install logrotate support
 	insinto /etc/logrotate.d
