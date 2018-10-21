@@ -1,38 +1,47 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header$
 
-EAPI="3"
+EAPI="7"
 
 MY_PN="${PN/-bin}"
 
 if [[ ${PV} == *_pre* ]] ; then
-	GIT_COMMIT="46bfa033e5ab0f431f84613f31d8431da048da86"
+	GIT_COMMIT="c17601c5892eaac40a359d1392e454ad5c69db9d"
 	SRC_URI="https://github.com/Logitech/slimserver/archive/${GIT_COMMIT}.zip"
 	HOMEPAGE="http://github.com/Logitech/slimserver"
 	S="${WORKDIR}/slimserver-${GIT_COMMIT}"
 	INHERIT_VCS=""
+	KEYWORDS="~amd64 ~x86"
+elif [[ ${PV} == "9999" ]] ; then
+	EGIT_BRANCH="public/7.9"
+	EGIT_REPO_URI="https://github.com/Logitech/slimserver.git"
+	HOMEPAGE="http://github.com/Logitech/slimserver"
+	S="${WORKDIR}/${PN}-${PV}"
+	INHERIT_VCS="git-r3"
 else
+	MY_PV="${PV/_*}"
+	MY_P="${MY_PN}-${MY_PV}"
 	SRC_DIR="LogitechMediaServer_v${PV}"
 	SRC_URI="http://downloads.slimdevices.com/${SRC_DIR}/${MY_P}.tgz"
 	HOMEPAGE="http://www.mysqueezebox.com/download"
-	BUILD_NUM="1375965195"
-	MY_PV="${PV/_*}"
-	MY_P_BUILD_NUM="${MY_PN}-${MY_PV}-${BUILD_NUM}"
-	MY_P="${MY_PN}-${MY_PV}"
-	S="${WORKDIR}/${MY_P_BUILD_NUM}"
+	S="${WORKDIR}/${MY_P}"
 	INHERIT_VCS=""
+	KEYWORDS="~amd64 ~x86"
 fi
 
 inherit ${INHERIT_VCS} eutils user systemd
 
-KEYWORDS="~amd64 ~x86"
-
 DESCRIPTION="Logitech Media Server (streaming audio server)"
+HOMEPAGE="http://github.com/Logitech/slimserver"
 LICENSE="${PN}"
 RESTRICT="bindist mirror"
 SLOT="0"
 IUSE=""
+
+PATCHES=(
+	"${FILESDIR}/${P}-uuid-gentoo.patch"
+	"${FILESDIR}/${P}-client-playlists-gentoo.patch"
+)
 
 # Installation dependencies.
 DEPEND="
@@ -46,8 +55,8 @@ RDEPEND="
 	!prefix? ( >=sys-apps/baselayout-2.0.0 )
 	!prefix? ( virtual/logger )
 	>=dev-lang/perl-5.8.8[ithreads]
-	x86? ( <dev-lang/perl-5.17[ithreads] )
-	amd64? ( <dev-lang/perl-5.21[ithreads] )
+	x86? ( <dev-lang/perl-5.23[ithreads] )
+	amd64? ( <dev-lang/perl-5.25[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 
@@ -55,12 +64,25 @@ RDEPEND="
 # files. We need to identify those to suppress the QA warnings during
 # installation.
 QA_PREBUILT="
+	opt/logitechmediaserver/Bin/aarch64-linux/alac
+	opt/logitechmediaserver/Bin/aarch64-linux/flac
+	opt/logitechmediaserver/Bin/aarch64-linux/sox
+	opt/logitechmediaserver/Bin/aarch64-linux/wvunpack
 	opt/logitechmediaserver/Bin/arm-linux/faad
 	opt/logitechmediaserver/Bin/arm-linux/flac
 	opt/logitechmediaserver/Bin/arm-linux/mac
 	opt/logitechmediaserver/Bin/arm-linux/sls
 	opt/logitechmediaserver/Bin/arm-linux/sox
 	opt/logitechmediaserver/Bin/arm-linux/wvunpack
+	opt/logitechmediaserver/Bin/armhf-linux/faad
+	opt/logitechmediaserver/Bin/armhf-linux/flac
+	opt/logitechmediaserver/Bin/armhf-linux/mac
+	opt/logitechmediaserver/Bin/armhf-linux/sox
+	opt/logitechmediaserver/Bin/armhf-linux/wvunpack
+	opt/logitechmediaserver/Bin/darwin-x86_64/faad
+	opt/logitechmediaserver/Bin/darwin-x86_64/flac
+	opt/logitechmediaserver/Bin/darwin-x86_64/sox
+	opt/logitechmediaserver/Bin/darwin-x86_64/wvunpack
 	opt/logitechmediaserver/Bin/darwin/faad
 	opt/logitechmediaserver/Bin/darwin/flac
 	opt/logitechmediaserver/Bin/darwin/mac
@@ -79,6 +101,11 @@ QA_PREBUILT="
 	opt/logitechmediaserver/Bin/i386-linux/sls
 	opt/logitechmediaserver/Bin/i386-linux/sox
 	opt/logitechmediaserver/Bin/i386-linux/wvunpack
+	opt/logitechmediaserver/Bin/i86pc-solaris-thread-multi-64int/alac
+	opt/logitechmediaserver/Bin/i86pc-solaris-thread-multi-64int/faad
+	opt/logitechmediaserver/Bin/i86pc-solaris-thread-multi-64int/flac
+	opt/logitechmediaserver/Bin/i86pc-solaris-thread-multi-64int/sox
+	opt/logitechmediaserver/Bin/i86pc-solaris-thread-multi-64int/wvunpack
 	opt/logitechmediaserver/Bin/powerpc-linux/faad
 	opt/logitechmediaserver/Bin/powerpc-linux/flac
 	opt/logitechmediaserver/Bin/powerpc-linux/mac
@@ -90,6 +117,7 @@ QA_PREBUILT="
 	opt/logitechmediaserver/Bin/sparc-linux/mp42aac
 	opt/logitechmediaserver/Bin/x86_64-linux/faad
 	opt/logitechmediaserver/Bin/x86_64-linux/flac
+	opt/logitechmediaserver/Bin/x86_64-linux/mac
 	opt/logitechmediaserver/Bin/x86_64-linux/sox
 	opt/logitechmediaserver/Bin/x86_64-linux/wvunpack
 	opt/logitechmediaserver/CPAN/arch/5.10/arm-linux-gnueabi-thread-multi/auto/Audio/Scan/Scan.so
@@ -468,6 +496,25 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.18/i386-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
@@ -487,6 +534,63 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.18/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabi-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.20/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
@@ -506,6 +610,215 @@ QA_PREBUILT="
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 	opt/logitechmediaserver/CPAN/arch/5.20/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.22/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.22/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.22/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.24/aarch64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.24/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.24/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.24/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.26/aarch64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.26/arm-linux-gnueabihf-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.26/i386-linux-thread-multi-64int/auto/YAML/XS/LibYAML/LibYAML.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Audio/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Class/XSAccessor/XSAccessor.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/DBD/SQLite/SQLite.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/DBI/DBI.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Digest/SHA1/SHA1.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/EV/EV.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Encode/Detect/Detector/Detector.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/HTML/Parser/Parser.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/IO/AIO/AIO.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/IO/Interface/Interface.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Image/Scale/Scale.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/JSON/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Linux/Inotify2/Inotify2.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/MP3/Cut/Gapless/Gapless.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Media/Scan/Scan.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Sub/Name/Name.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/Template/Stash/XS/XS.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
+	opt/logitechmediaserver/CPAN/arch/5.26/x86_64-linux-thread-multi/auto/YAML/XS/LibYAML/LibYAML.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Audio/Scan/Scan.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Class/C3/XS/XS.so
 	opt/logitechmediaserver/CPAN/arch/5.8/arm-linux-gnueabi-thread-multi/auto/Class/XSAccessor/XSAccessor.so
@@ -672,12 +985,14 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Apply patches to make LMS work on Gentoo.
-	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
-	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
-
-	# Add some enhancement patches of my own.
-	epatch "${FILESDIR}/${P}-fix-transition-sample-rates2.patch"
+	(cd Bin && rm -rf aarch64-linux arm*-linux i86pc-solaris* sparc-linux powerpc-linux)
+	rm -rf CPAN/arch/*/aarch64* CPAN/arch/*/arm*
+	if use amd64 ; then
+		rm -rf Bin/i386-linux CPAN/arch/*/i386-linux-thread-multi-64int
+	elif use x86 ; then
+		rm -rf Bin/x86_64-linux CPAN/arch/*/x86_64-linux-thread-multi
+	fi
+	default
 }
 
 src_install() {
@@ -696,17 +1011,16 @@ src_install() {
 	dodoc "${FILESDIR}/Gentoo-plugins-README.txt"
 	dodoc "${FILESDIR}/Gentoo-detailed-changelog.txt"
 
-	# Preferences directory
-	dodir "${PREFSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${PREFSDIR}"
-	fperms 770 "${PREFSDIR}"
-
 	# Install init scripts (OpenRC)
 	newconfd "${FILESDIR}/logitechmediaserver.conf.d" "${MY_PN}"
 	newinitd "${FILESDIR}/logitechmediaserver.init.d" "${MY_PN}"
 
 	# Install unit file (systemd)
 	systemd_dounit "${FILESDIR}/${MY_PN}.service"
+
+	# Initialise user data directories
+	diropts -m 0770 -o ${RUN_UID} -g ${RUN_GID}
+	keepdir "${PREFSDIR}" "${CLIENTPLAYLISTSDIR}" "${USRPLUGINSDIR}" "${CACHEDIR}"
 
 	# Initialize server cache directory
 	dodir "${CACHEDIR}"
@@ -715,24 +1029,12 @@ src_install() {
 
 	# Initialize the log directory
 	dodir "${LOGDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}"
-	fperms 770 "${LOGDIR}"
 	touch "${ED}/${LOGDIR}/server.log"
 	touch "${ED}/${LOGDIR}/scanner.log"
 	touch "${ED}/${LOGDIR}/perfmon.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/server.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/scanner.log"
 	fowners ${RUN_UID}:${RUN_GID} "${LOGDIR}/perfmon.log"
-
-	# Initialise the user-installed plugins directory
-	dodir "${USRPLUGINSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${USRPLUGINSDIR}"
-	fperms 770 "${USRPLUGINSDIR}"
-
-	# Initialise the client playlists directory
-	dodir "${CLIENTPLAYLISTSDIR}"
-	fowners ${RUN_UID}:${RUN_GID} "${CLIENTPLAYLISTSDIR}"
-	fperms 770 "${CLIENTPLAYLISTSDIR}"
 
 	# Install logrotate support
 	insinto /etc/logrotate.d
