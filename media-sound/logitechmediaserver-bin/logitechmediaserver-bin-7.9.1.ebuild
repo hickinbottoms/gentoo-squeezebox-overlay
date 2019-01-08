@@ -56,7 +56,7 @@ RDEPEND="
 	!prefix? ( virtual/logger )
 	>=dev-lang/perl-5.8.8[ithreads]
 	x86? ( <dev-lang/perl-5.23[ithreads] )
-	amd64? ( <dev-lang/perl-5.25[ithreads] )
+	amd64? ( <dev-lang/perl-5.27[ithreads] )
 	>=dev-perl/Data-UUID-1.202
 	"
 
